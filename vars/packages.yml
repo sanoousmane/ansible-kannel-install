@@ -1,0 +1,32 @@
+---
+packages:
+- unzip
+- bzip2
+- xz
+- tar
+- policycoreutils-python-utils
+- net-tools
+- ksh
+- net-snmp
+- vim
+- nfs-utils
+- openssh-askpass
+- expect
+- gzip
+- tar
+- make
+- sed
+- gcc
+- gcc-c++
+- python3.11
+- python3.11-pip
+- python3.11-setuptools
+- python3.11-PyMySQL
+- libxml2-devel
+- libxml2
+- bison
+- flex
+- openssl
+- openssl-devel
+- byacc
+- patch

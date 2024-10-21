@@ -1,0 +1,43 @@
+---
+- name: Install Kannel 1.4.5 on RHEL9 / By Ousmane SANOGO
+  hosts: all
+  vars_files:
+    - ../vars/packages.yml
+  tasks:
+    - name: Update server fresh Install
+      dnf:
+        name: "*"
+        state: latest
+    - name: Install some packages
+      dnf:
+        name: "{{ packages }}"
+        state: present
+    - name: unzip file in tmp
+      unarchive:
+        src: ../files/gateway-1.4.5.tar.bz2
+        dest: /tmp
+#      when: not register_name.stat.exists
+    - name: Copy patch file
+      copy:
+        src: files/gateway-1.4.5.patch.gz
+        dest: /tmp
+    - name: Patch kannel
+      shell: |
+        cd /tmp/gateway-1.4.5
+        gunzip -c ../gateway-1.4.5.patch.gz | patch -p1
+    - name: compile program
+      shell: |
+        cd /tmp/gateway-1.4.5
+        ./configure  -prefix=/usr/local/kannel
+    - name: copy wtp_resp.c to bypass  dispatch_to_wsp error
+      copy:
+        src: files/wtp_resp.c
+        dest: /tmp/gateway-1.4.5/wap/wtp_resp.c
+    - name: Execute Make
+      shell: |
+        cd /tmp/gateway-1.4.5
+        make
+    - name: Execute Make Install
+      shell: |
+        cd /tmp/gateway-1.4.5
+        make install
